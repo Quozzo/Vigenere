@@ -91,7 +91,7 @@ const Cypher = () => {
 	return (
 		<div id='container'>
 			<div className='single'>
-				<span> Key</span>
+				<span id='keyLegend'> Key</span>
 				<input
 					id='key'
 					type='text'

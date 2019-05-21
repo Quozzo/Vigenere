@@ -8,6 +8,14 @@ html,
 	width: 100%;
 }
 
+.App {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: stretch;
+	align-content: stretch;
+}
+
 .App-header {
 	background-color: #282c34;
 	min-height: 10vh;
@@ -20,7 +28,7 @@ html,
 }
 
 #container {
-	height: 100%;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -34,6 +42,10 @@ html,
 
 #buttons input + input {
 	margin-left: 10px;
+}
+
+#keyLegend {
+	margin-right: 10px;
 }
 
 .single {

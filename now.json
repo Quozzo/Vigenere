@@ -1,7 +1,7 @@
 {
 	"version": 2,
-	"name": "Cypher",
-	"alias": "Cypher",
+	"name": "Cipher",
+	"alias": "Cipher",
 	"builds": [
 		{
 			"src": "package.json",

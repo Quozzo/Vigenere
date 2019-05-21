@@ -1,32 +1,40 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 
-export default class Cypher extends Component {
-	alphanumeric =
+const Cypher = () => {
+	const [KEY, setKey] = useState('')
+	const [text, setText] = useState('')
+	const [encrypted, setEncrypted] = useState('')
+
+	const set = {
+		key: setKey,
+		text: setText,
+		encrypted: setEncrypted
+	}
+
+	const alphanumeric =
 		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
-	state = {
-		key: 'Lorem',
-		text: '',
-		encrypted: ''
+	const onChange = e => {
+		set[e.target.name](e.target.value)
+		onEncrypt()
+		onDecrypt()
+		console.log('name', e.target.name)
+		console.log('target', e.target.value)
+		console.log('state', text, encrypted)
 	}
 
-	onChange = e => {
-		this.setState({
-			[e.target.name]: e.target.value
-		})
-	}
-
-	onEncrypt = () => {
+	const onEncrypt = e => {
+		console.log('encrypt')
 		let cypher = [],
-			msg = this.state.text,
-			key = this.state.key.replace(/[^a-zA-Z0-9]/gi, ''),
+			msg = text,
+			key = KEY.replace(/[^a-zA-Z0-9]/gi, ''),
 			keyL = key.length,
-			alphaL = this.alphanumeric.length,
+			alphaL = alphanumeric.length,
 			buff
 
 		for (let i = 0, l = msg.length; i < l; i++) {
-			let k = this.alphanumeric.indexOf(key[i % keyL]) + 1
-			let c = this.alphanumeric.indexOf(msg[i]) + 1
+			let k = alphanumeric.indexOf(key[i % keyL]) + 1
+			let c = alphanumeric.indexOf(msg[i]) + 1
 			if (!c) {
 				cypher.push(msg[i])
 				continue
@@ -39,79 +47,82 @@ export default class Cypher extends Component {
 
 		cypher = cypher
 			.map(v =>
-				this.alphanumeric.indexOf(this.alphanumeric[v - 1]) === -1
+				alphanumeric.indexOf(alphanumeric[v - 1]) === -1
 					? v
-					: this.alphanumeric[v - 1]
+					: alphanumeric[v - 1]
 			)
 			.join('')
-		console.log(msg)
-		return cypher
+
+		setEncrypted(cypher)
 	}
 
-	onDecrypt = () => {
-		// let msg = this.state.encrypted,
-		// 	cypher = [],
-		// 	key = this.state.key.replace(/[^a-zA-Z0-9]/gi, ''),
-		// 	keyL = key.length,
-		// 	alphaL = this.alphanumeric.length,
-		// 	buff
-		// for (let i = 0, l = msg.length; i < l; i++) {
-		// 	let k = this.alphanumeric.indexOf(key[i % keyL]) + 1
-		// 	let c = this.alphanumeric.indexOf(msg[i]) + 1
-		// 	if (!c) {
-		// 		cypher.push(msg[i])
-		// 		continue
-		// 	}
-		// 	buff = c - k
-		// 	cypher.push(buff > 0 ? buff : alphaL + buff)
-		// }
-		// cypher = cypher
-		// 	.map(v =>
-		// 		this.alphanumeric.indexOf(this.alphanumeric[v - 1]) === -1
-		// 			? v
-		// 			: this.alphanumeric[v - 1]
-		// 	)
-		// 	.join('')
-		// return cypher
+	const onDecrypt = e => {
+		console.log('decrypt')
+		let msg = encrypted,
+			cypher = [],
+			key = KEY.replace(/[^a-zA-Z0-9]/gi, ''),
+			keyL = key.length,
+			alphaL = alphanumeric.length,
+			buff
+
+		for (let i = 0, l = msg.length; i < l; i++) {
+			let k = alphanumeric.indexOf(key[i % keyL]) + 1
+			let c = alphanumeric.indexOf(msg[i]) + 1
+			if (!c) {
+				cypher.push(msg[i])
+				continue
+			}
+			buff = c - k
+			cypher.push(buff > 0 ? buff : alphaL + buff)
+		}
+
+		cypher = cypher
+			.map(v =>
+				alphanumeric.indexOf(alphanumeric[v - 1]) === -1
+					? v
+					: alphanumeric[v - 1]
+			)
+			.join('')
+
+		setText(cypher)
 	}
 
-	render() {
-		return (
-			<div id='container'>
-				<div className='single'>
-					<Input
-						id='key'
-						type='text'
-						placeholder='Enter a key like "Hello"'
-						value='Lorem'
-						onChange={this.onChange}
-					/>
-					<span> Key</span>
-				</div>
-				<div className='double'>
-					<Textarea
-						placeholder='Enter text and click Encrypt'
-						id='in'
-						type='text'
-						name='text'
-						onChange={this.onChange}
-						value={this.onDecrypt(this.state.text)}
-					/>
-				</div>
-				<div className='double'>
-					<Textarea
-						placeholder='Enter text and click Decrypt'
-						id='out'
-						type='text'
-						name='encrypted'
-						onChange={this.onChange}
-						value={this.onEncrypt(this.state.encrypted)}
-					/>
-				</div>
+	return (
+		<div id='container'>
+			<div className='single'>
+				<Input
+					id='key'
+					type='text'
+					placeholder='Enter a key like "Hello"'
+					value={KEY}
+					name='key'
+					onChange={onChange}
+				/>
+				<span> Key</span>
 			</div>
-		)
-	}
+			<div className='double'>
+				<Textarea
+					placeholder='Enter text and click Encrypt'
+					type='text'
+					name='text'
+					onChange={onChange}
+					value={text}
+				/>
+			</div>
+			<div className='double'>
+				<Textarea
+					placeholder='Enter text and click Decrypt'
+					type='text'
+					name='encrypted'
+					onChange={onChange}
+					value={encrypted}
+				/>
+			</div>
+		</div>
+	)
 }
+
+export default Cypher
 
 const Input = props => <input {...props} />
 

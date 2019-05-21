@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const Cypher = () => {
-	const [KEY, setKey] = useState('')
+	const [KEY, setKey] = useState('Lorem')
 	const [text, setText] = useState('')
 	const [encrypted, setEncrypted] = useState('')
 
@@ -16,15 +16,17 @@ const Cypher = () => {
 
 	const onChange = e => {
 		set[e.target.name](e.target.value)
-		onEncrypt()
-		onDecrypt()
-		console.log('name', e.target.name)
-		console.log('target', e.target.value)
-		console.log('state', text, encrypted)
 	}
 
-	const onEncrypt = e => {
-		console.log('encrypt')
+	useEffect(() => {
+		onEncrypt()
+	}, [KEY, text])
+
+	useEffect(() => {
+		onDecrypt()
+	}, [encrypted])
+
+	const onEncrypt = () => {
 		let cypher = [],
 			msg = text,
 			key = KEY.replace(/[^a-zA-Z0-9]/gi, ''),
@@ -56,8 +58,7 @@ const Cypher = () => {
 		setEncrypted(cypher)
 	}
 
-	const onDecrypt = e => {
-		console.log('decrypt')
+	const onDecrypt = () => {
 		let msg = encrypted,
 			cypher = [],
 			key = KEY.replace(/[^a-zA-Z0-9]/gi, ''),
@@ -90,7 +91,7 @@ const Cypher = () => {
 	return (
 		<div id='container'>
 			<div className='single'>
-				<Input
+				<input
 					id='key'
 					type='text'
 					placeholder='Enter a key like "Hello"'
@@ -101,7 +102,7 @@ const Cypher = () => {
 				<span> Key</span>
 			</div>
 			<div className='double'>
-				<Textarea
+				<textarea
 					placeholder='Enter text and click Encrypt'
 					type='text'
 					name='text'
@@ -110,7 +111,7 @@ const Cypher = () => {
 				/>
 			</div>
 			<div className='double'>
-				<Textarea
+				<textarea
 					placeholder='Enter text and click Decrypt'
 					type='text'
 					name='encrypted'
@@ -123,7 +124,3 @@ const Cypher = () => {
 }
 
 export default Cypher
-
-const Input = props => <input {...props} />
-
-const Textarea = props => <textarea {...props} />

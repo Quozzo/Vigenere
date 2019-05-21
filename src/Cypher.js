@@ -12,7 +12,7 @@ const Cypher = () => {
 	}
 
 	const alphanumeric =
-		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
 
 	const onChange = e => {
 		set[e.target.name](e.target.value)
@@ -91,6 +91,7 @@ const Cypher = () => {
 	return (
 		<div id='container'>
 			<div className='single'>
+				<span> Key</span>
 				<input
 					id='key'
 					type='text'
@@ -99,11 +100,10 @@ const Cypher = () => {
 					name='key'
 					onChange={onChange}
 				/>
-				<span> Key</span>
 			</div>
 			<div className='double'>
 				<textarea
-					placeholder='Enter text and click Encrypt'
+					placeholder='Enter text to encrypt'
 					type='text'
 					name='text'
 					onChange={onChange}
@@ -112,7 +112,7 @@ const Cypher = () => {
 			</div>
 			<div className='double'>
 				<textarea
-					placeholder='Enter text and click Decrypt'
+					placeholder='Enter text to decrypt'
 					type='text'
 					name='encrypted'
 					onChange={onChange}
